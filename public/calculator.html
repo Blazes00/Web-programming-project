@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <link rel="stylesheet" href="calculatorstyle.css">
+    <link rel="stylesheet" href="sidebar.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="item">
+                <img class="icon" src="NoteIcon.png" alt="Logo">
+                <div class="text">SimNote</div>
+            </div>
+            <hr>
+            <div class="item">
+                <img class="icon" src="homeIcon.png" alt="Home">
+                <div class="text"><a href="home.html">Home</a></div>
+            </div>
+            <div class="item">
+                <img class="icon" src="notepadIcon.png" alt="Logo">
+                <div class="text"><a href="Notepad.html">Notepad</a></div>
+            </div>
+            <div class="item">
+                <img class="icon" src="calculatorIcon.png" alt="To-do">
+                <div class="text"><a href="calculator.html">Calculator</a></div>
+            </div>
+            <div class="item">
+                <img class="icon" src="timer.png" alt="Timer">
+                <div class="text"><a href="timer.html">Timer</a></div>
+            </div>
+        </div>
+
+        <!-- Calculator -->
+        <div id="calc">
+            <div id="content">
+                <form>
+                    <div id="output">
+                        <input type="text" id='res' readonly>
+                    </div>
+                    <div class="btn">
+                        <input type="button" value='C' onclick="Clear()" id="clear">
+                        <input type="button" value='←' onclick="Back()" id="backspace">
+                        <input type="button" value='%' onclick="Solve('%')">
+                        <input type="button" value='/' onclick="Solve('/')">
+                        <input type="button" value='7' onclick="Solve('7')">
+                        <input type="button" value='8' onclick="Solve('8')">
+                        <input type="button" value='9' onclick="Solve('9')">
+                        <input type="button" value='x' onclick="Solve('x')">
+                        <input type="button" value='4' onclick="Solve('4')">
+                        <input type="button" value='5' onclick="Solve('5')">
+                        <input type="button" value='6' onclick="Solve('6')">
+                        <input type="button" value='-' onclick="Solve('-')">
+                        <input type="button" value='1' onclick="Solve('1')">
+                        <input type="button" value='2' onclick="Solve('2')">
+                        <input type="button" value='3' onclick="Solve('3')">
+                        <input type="button" value='+' onclick="Solve('+')">
+                        <input type="button" value='00' onclick="Solve('00')">
+                        <input type="button" value='0' onclick="Solve('0')">
+                        <input type="button" value='.' onclick="Solve('.')">
+                        <input type="button" value='=' onclick="Result()">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="calculatorfunction.js"></script>
+</body>
+</html>

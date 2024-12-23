@@ -1,0 +1,96 @@
+html, body{
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: cadetblue;
+    font-family: 'Rockwell';
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-size: cover;
+    transition: background-image 0.5s ease;
+}
+
+.body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    text-align: center;
+    flex-direction: column;
+}
+
+.container {
+    display: flex;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+}
+
+.sidebar {
+    width: 60px;
+    background-color: teal;
+    transition: width 0.3s ease;
+}
+
+.sidebar:hover {
+    width: 170px;
+}
+
+.sidebar .item {
+    display: flex;
+    align-items: center;
+    margin: 20px 0;
+}
+
+.sidebar .item .icon {
+    width: 40px;
+    height: 30px;
+}
+
+.sidebar .item .text {
+    margin-left: 15px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.sidebar:hover .item .text {
+    opacity: 1;
+}
+
+.item {
+    display: flex;
+    align-items: center;
+    margin: 20px 0;
+}
+
+.item .icon {
+    width: 40px;
+    height: 30px;
+    flex-shrink: 0;
+    padding-left: 5px;
+    fill: #DDF2FD; /* Sidebar icon color */
+}
+
+.text {
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    transition-delay: 0.2s;
+    margin-left: 15px;
+    white-space: nowrap;
+    color: #DDF2FD;
+}
+
+a {
+    text-decoration: none;
+    color: #DDF2FD;
+    transition: color 0.3s;
+}
+
+.text a:hover {
+    color: #6cc1d9; 
+}
+
+.text a:active {
+    background-color: #9BBEC8;
+}

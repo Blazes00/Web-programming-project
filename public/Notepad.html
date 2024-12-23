@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>SimNote</title>
+        <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="sidebar.css">
+        <script src="https://cdn.jsdelivr.net/npm/react/umd/react.production.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/react-dom/umd/react-dom.production.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/babel-standalone@6/babel.min.js"></script>
+        <style>
+            body {
+                background-color:cadetblue;
+                font-family: 'Rockwell', sans-serif;
+                min-height: 100vh;
+                margin: 0;
+                display: flex;
+            }
+
+            .app-container {
+                display: flex;
+                flex-grow: 1; /* Allows the container to fill remaining space */
+                justify-content: center;
+                align-items: center;
+                padding: 20px;
+            }
+
+            #root {
+                margin-top: 50px;
+                margin-left: 350px;
+                flex-grow: 1; /* Ensures the notepad takes up the remaining space */
+                max-width: 600px; /* Limits the width of the notepad */
+            }
+        </style>
+    </head>
+    <body>
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="item">
+                <img class="icon" src="NoteIcon.png" alt="Logo">
+                <div class="text">SimNote</div>
+            </div>
+            <hr>
+            <div class="item">
+                <img class="icon" src="homeIcon.png" alt="Home">
+                <div class="text"><a href="home.html">Home</a></div>
+            </div>
+            <div class="item">
+                <img class="icon" src="notepadIcon.png" alt="Logo">
+                <div class="text"><a href="Notepad.html">Notepad</a></div>
+            </div>
+            <div class="item">
+                <img class="icon" src="calculatorIcon.png" alt="To-do">
+                <div class="text"><a href="calculator.html">Calculator</a></div>
+            </div>
+            <div class="item">
+                <img class="icon" src="timer.png" alt="Timer">
+                <div class="text"><a href="timer.html">Timer</a></div>
+            </div>
+        </div>
+
+        <!-- Notepad function -->
+        <div id="root"></div>
+
+        <script type="text/babel">
+            const { useState, useEffect } = React;
+
+                class NoteService {
+                    static async getNotes() {
+                        const response = await fetch('http://localhost:5000/notes');
+                        return await response.json();
+                    }
+
+                    static async saveNotes(note) {
+                        const response = await fetch('http://localhost:5000/notes', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(note),
+                        });
+                        return await response.json();
+                    }
+
+                    static async deleteNote(id) {
+                        await fetch(`http://localhost:5000/notes/${id}`, {
+                            method: 'DELETE',
+                        });
+                    }
+                }
+
+                const NotepadApp = () => {
+                    const [notes, setNotes] = useState([]);
+                    const [currentNote, setCurrentNote] = useState(null);
+                    const [isEditing, setIsEditing] = useState(false);
+
+                    // Fetch notes when component is mounted
+                    useEffect(() => {
+                        const loadNotes = async () => {
+                            const loadedNotes = await NoteService.getNotes();
+                            setNotes(loadedNotes);
+                        };
+                        loadNotes();
+                    }, []);
+
+                    // Handle adding a new note
+                    const handleAddNote = () => {
+                        const newNote = {
+                            title: 'New Note',
+                            content: '',
+                            createdAt: new Date().toLocaleString()
+                        };
+                        setCurrentNote(newNote);
+                        setIsEditing(true);
+                    };
+
+                    // Handle saving the current note
+                    const handleSaveNote = async () => {
+                        if (currentNote) {
+                            const savedNote = await NoteService.saveNotes(currentNote);
+                            setNotes([...notes, savedNote]);  // Add the new note to the state
+                            setIsEditing(false);
+                            setCurrentNote(null);  // Reset the current note
+                        }
+                    };
+
+                    // Handle deleting a note
+                    const handleDeleteNote = async (id) => {
+                        await NoteService.deleteNote(id);
+                        setNotes(notes.filter(note => note._id !== id));  // Remove deleted note from state
+                    };
+
+                    return (
+                        <div className="max-w-md mx-auto bg-white shadow-md rounded">
+                            <div className="p-4 flex justify-between items-center bg-gray-200">
+                                <h1 className="text-xl font-bold">Notes</h1>
+                                <button onClick={handleAddNote} className="p-2 rounded-full bg-blue-500 text-white">
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4" />
+                                    </svg>
+                                </button>
+                            </div>
+                            <div className="p-4">
+                                {notes.length === 0 ? (
+                                    <p className="text-gray-500 text-center">No notes yet. Click "+" to add one!</p>
+                                ) : (
+                                    notes.map(note => (
+                                        <div key={note._id} className="p-2 bg-gray-100 rounded my-2 shadow">
+                                            <h2 className="font-bold">{note.title}</h2>
+                                            <p className="text-sm text-gray-500">{note.createdAt}</p>
+                                            <p className="mt-2 text-gray-700 whitespace-pre-wrap">{note.content}</p>
+                                            <button onClick={() => handleDeleteNote(note._id)} className="text-red-500 text-sm mt-2">
+                                                Delete
+                                            </button>
+                                        </div>
+                                    ))
+                                )}
+                            </div>
+                            {isEditing && currentNote && (
+                                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+                                    <div className="bg-white p-4 rounded shadow-md max-w-sm w-full">
+                                        <input
+                                            type="text"
+                                            className="border-b-2 w-full p-2 text-lg mb-4"
+                                            placeholder="Note Title"
+                                            value={currentNote.title}
+                                            onChange={(e) => setCurrentNote({ ...currentNote, title: e.target.value })}
+                                        />
+                                        <textarea
+                                            className="border w-full p-2 mb-4"
+                                            placeholder="Note Content"
+                                            value={currentNote.content}
+                                            onChange={(e) => setCurrentNote({ ...currentNote, content: e.target.value })}
+                                        />
+                                        <button onClick={handleSaveNote} className="bg-blue-500 text-white px-4 py-2 rounded">
+                                            Save
+                                        </button>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                    );
+                };
+
+                ReactDOM.render(<NotepadApp />, document.getElementById('root'));
+        </script>
+    </body>
+    </html>

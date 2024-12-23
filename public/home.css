@@ -1,0 +1,80 @@
+.body {
+    margin-left: 60px; /* Account for the sidebar width */
+    width: calc(100% - 60px); /* Adjust content width */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Full height of the viewport */
+    text-align: center;
+}
+
+.container {
+    display: flex;
+    height: 100%;
+}
+
+.section1 {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 50px; /* Adds spacing between title/quote and icons */
+}
+
+.title {
+    font-size: 120px;
+    color: #427D9D; /* Matches the original title color */
+    margin-bottom: 20px; /* Adds spacing below the title */
+}
+
+.quotes {
+    font-size: 18px;
+    color:white;
+    margin: 10px;
+}
+
+.section2 {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap; /* Allows icons to wrap */
+    gap: 20px; /* Adds spacing between rows on smaller screens */
+}
+
+.icon-row {
+    display: flex;
+    justify-content: center;
+    gap: 60px; /* Adds spacing between individual icons */
+    flex-wrap: wrap; /* Ensures icons wrap on smaller screens */
+}
+
+.icon-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 10px; /* Adds equal spacing around icons */
+}
+
+.divider {
+    width: 2px; /* Thickness of the line */
+    height: 70px; /* Matches icon height */
+    background-color: white; /* Line color */
+    margin: 0 10px; /* Space between the icon and the line */
+}
+
+.icon {
+    width: 70px;
+    height: 70px;
+    margin-bottom: 10px; /* Adds space below the icon */
+}
+
+.icon-label {
+    margin-top: 8px;
+    font-size: 16px;
+    color: white; /* Matches quotes color */
+    text-align: center;
+}
+
+.icon-label :hover{
+    text-decoration: underline;
+}

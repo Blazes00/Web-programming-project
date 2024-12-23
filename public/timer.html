@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>SimNote</title>
+    <link rel="stylesheet" type="text/css" href="sidebar.css" />
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background-color: cadetblue;
+        }
+        .container {
+            display: flex;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
+        .container .container {
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .timer-wrapper {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            text-align: center;
+            width: 100%;
+            max-width: 400px;
+        }
+        #timer {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+        button {
+            margin: 0 10px;
+            padding: 10px 20px;
+            font-size: 1rem;
+        }
+        input {
+            margin-bottom: 20px;
+            padding: 5px;
+            font-size: 1rem;
+            width: 100%;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!--Sidebar-->
+        <div class="sidebar">
+            <div class="item">
+                <img class="icon" src="NoteIcon.png">
+                <div class="text">SimNote</div>
+            </div>
+            <hr>
+            <div class="item">
+                <img class="icon" src="homeIcon.png">
+                <div class="text"><a href="home.html">Home</a></div>
+            </div>
+            <div class="item">
+                <img class="icon" src="notepadIcon.png" alt="Logo">
+                <div class="text"><a href="Notepad.html">Notepad</a></div>
+            </div>
+            <div class="item">
+                <img class="icon" src="calculatorIcon.png">
+                <div class="text"><a href="calculator.html">Calculator</a></div>
+            </div>
+            <div class="item">
+                <img class="icon" src="timer.png">
+                <div class="text"><a href="timer.html">Timer</a></div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="timer-wrapper">
+                <h1>Countdown Timer</h1>
+                <input type="number" id="minutes" placeholder="Enter minutes" min="0">
+                <div id="timer">00:00</div>
+                <div>
+                    <button onclick="startTimer()">Start</button>
+                    <button onclick="pauseTimer()">Pause</button>
+                    <button onclick="resetTimer()">Reset</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let countdown;
+        let remainingTime = 0;
+        let isRunning = false;
+
+        function startTimer() {
+            if (isRunning) return;
+
+            // If no time is set, get minutes from input
+            if (remainingTime === 0) {
+                const minutes = document.getElementById('minutes').value;
+                if (!minutes || minutes <= 0) {
+                    alert('Please enter a valid number of minutes');
+                    return;
+                }
+                remainingTime = minutes * 60;
+            }
+
+            isRunning = true;
+            countdown = setInterval(updateTimer, 1000);
+        }
+
+        function pauseTimer() {
+            clearInterval(countdown);
+            isRunning = false;
+        }
+
+        function resetTimer() {
+            clearInterval(countdown);
+            remainingTime = 0;
+            isRunning = false;
+            document.getElementById('timer').textContent = '00:00';
+            document.getElementById('minutes').value = '';
+        }
+
+        function updateTimer() {
+            if (remainingTime <= 0) {
+                clearInterval(countdown);
+                isRunning = false;
+                alert('Time is up!');
+                return;
+            }
+
+            remainingTime--;
+            const minutes = Math.floor(remainingTime / 60);
+            const seconds = remainingTime % 60;
+            
+            document.getElementById('timer').textContent = 
+                `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+    </script>
+</body>
+</html>
